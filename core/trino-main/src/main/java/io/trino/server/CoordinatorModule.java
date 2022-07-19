@@ -91,6 +91,7 @@ import io.trino.memory.TotalReservationOnBlockedNodesQueryLowMemoryKiller;
 import io.trino.memory.TotalReservationOnBlockedNodesTaskLowMemoryKiller;
 import io.trino.operator.ForScheduler;
 import io.trino.operator.OperatorStats;
+import io.trino.server.metric.MetricModule;
 import io.trino.server.protocol.ExecutingStatementResource;
 import io.trino.server.protocol.QueryInfoUrlFactory;
 import io.trino.server.remotetask.RemoteTaskStats;
@@ -148,6 +149,7 @@ public class CoordinatorModule
     protected void setup(Binder binder)
     {
         install(new WebUiModule());
+        install(new MetricModule());
 
         // coordinator announcement
         discoveryBinder(binder).bindHttpAnnouncement("trino-coordinator");
