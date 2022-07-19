@@ -28,6 +28,8 @@ import io.trino.spi.resourcegroups.ResourceGroupConfigurationManagerFactory;
 import io.trino.spi.resourcegroups.ResourceGroupId;
 import io.trino.spi.resourcegroups.SelectionContext;
 import io.trino.spi.resourcegroups.SelectionCriteria;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.weakref.jmx.JmxException;
 import org.weakref.jmx.MBeanExporter;
 import org.weakref.jmx.Managed;
@@ -89,6 +91,14 @@ public final class InternalResourceGroupManager<C>
         this.configurationManagerContext = new ResourceGroupConfigurationManagerContextInstance(memoryPoolManager, nodeInfo.getEnvironment());
         this.legacyManager = requireNonNull(legacyManager, "legacyManager is null");
         this.configurationManager = new AtomicReference<>(cast(legacyManager));
+    }
+
+    public Set<ResourceGroupInfo> getResourceGroupInfoSet()
+    {
+        return groups.values()
+                .stream()
+                .map(resourceGroup -> resourceGroup.getFullInfo())
+                .collect(Collectors.toSet());
     }
 
     @Override
